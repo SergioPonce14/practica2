@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Liga · M2 Async Odyssey</title>
+    <title>La Liga</title>
     <link rel="stylesheet" href="/src/style.css">
     <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
     <header>
-        <h1>⚽ Atlas de La Liga</h1>
+        <h1>La Liga</h1>
         <p>Los 20 clubes de Primera División: haz clic en cualquier equipo para ver su historia y estadio</p>
     </header>
 
@@ -23,7 +23,7 @@
                 <option value="fundacion">Más antiguos primero</option>
             </select>
 
-            <button id="btnRecargar" type="button">🔄 Limpiar caché y recargar</button>
+            <button id="btnRecargar" type="button">recargar</button>
         </section>
 
         <!-- Estadísticas calculadas con reduce() -->
@@ -33,7 +33,7 @@
         <section id="contenedorEquipos" class="grid-equipos"></section>
     </main>
 
-    <!-- Modal oculto para ver la información completa al clicar un equipo -->
+    
     <div id="modalDetalle" class="modal oculto">
         <div class="modal-contenido">
             <button id="btnCerrarModal" class="btn-cerrar" type="button">✖ Cerrar</button>
