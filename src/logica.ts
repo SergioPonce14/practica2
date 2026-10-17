@@ -1,46 +1,88 @@
-import type { Equipo, CriterioOrden } from "./tipos";
+import type { Equipo, CriterioOrden, EstadisticasLiga } from "./tipos";
 
+const CLAVE_FAVORITOS = "favoritos_laliga_ids";
 
-export function filtrarEquipos(equipos: Equipo[], textoBusqueda: string): Equipo[] {
+export function filtrarEquipos(
+    equipos: Equipo[],
+    textoBusqueda: string,
+    soloFavoritos: boolean,
+    favoritosIds: Set<string>
+): Equipo[] {
     const texto = textoBusqueda.toLowerCase().trim();
-    if (!texto) return equipos;
 
-    return equipos.filter((eq) => 
-        eq.nombre.toLowerCase().includes(texto) ||
-        eq.ciudad.toLowerCase().includes(texto) ||
-        eq.estadio.toLowerCase().includes(texto)
-    );
-}
+    return equipos.filter((eq) => {
+        if (soloFavoritos && !favoritosIds.has(eq.id)) {
+            return false;
+        }
+        if (!texto) return true;
 
-// 2. Ordenar inmutabilidad con toSorted() (Bloque 1 de la teoría)
-export function ordenarEquipos(equipos: Equipo[], criterio: CriterioOrden): Equipo[] {
-    // Usamos toSorted en lugar de sort para NO mutar el array original
-    return equipos.toSorted((a, b) => {
-        if (criterio === "nombre") {
-            return a.nombre.localeCompare(b.nombre);
-        }
-        if (criterio === "capacidad") {
-            return b.capacidad - a.capacidad; // De mayor a menor aforo
-        }
-        if (criterio === "fundacion") {
-            return a.fundacion - b.fundacion; // Del más antiguo al más moderno
-        }
-        return 0;
+        return (
+            eq.nombre.toLowerCase().includes(texto) ||
+            eq.ciudad.toLowerCase().includes(texto) ||
+            eq.estadio.toLowerCase().includes(texto) ||
+            eq.apodo.toLowerCase().includes(texto)
+        );
     });
 }
 
+const COMPARADORES: Record<CriterioOrden, (a: Equipo, b: Equipo) => number> = {
+    nombre: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
+    fundacion: (a, b) => {
+        const anioA = a.fundacion ?? Number.MAX_SAFE_INTEGER;
+        const anioB = b.fundacion ?? Number.MAX_SAFE_INTEGER;
+        return anioA - anioB;
+    }
+};
 
-export function calcularEstadisticas(equipos: Equipo[]) {
+export function ordenarEquipos(equipos: Equipo[], criterio: CriterioOrden): Equipo[] {
+    const comparador = COMPARADORES[criterio];
+    return equipos.toSorted(comparador);
+}
+
+export function calcularEstadisticas(equipos: Equipo[]): EstadisticasLiga {
     if (equipos.length === 0) {
-        return { totalEquipos: 0, capacidadTotal: 0, capacidadMedia: 0 };
+        return {
+            totalEquipos: 0,
+            totalCiudades: 0
+        };
     }
 
-    const capacidadTotal = equipos.reduce((acumulador, eq) => acumulador + eq.capacidad, 0);
-    const capacidadMedia = Math.round(capacidadTotal / equipos.length);
+    const ciudadesUnicas = new Set(equipos.map((eq) => eq.ciudad));
+    const totalCiudades = ciudadesUnicas.size;
 
     return {
         totalEquipos: equipos.length,
-        capacidadTotal,
-        capacidadMedia
+        totalCiudades
     };
+}
+
+export function cargarFavoritos(): Set<string> {
+    try {
+        const guardado = localStorage.getItem(CLAVE_FAVORITOS);
+        if (!guardado) return new Set<string>();
+        const lista: unknown = JSON.parse(guardado);
+        if (Array.isArray(lista) && lista.every((id) => typeof id === "string")) {
+            return new Set<string>(lista);
+        }
+        return new Set<string>();
+    } catch {
+        return new Set<string>();
+    }
+}
+
+export function alternarFavorito(favoritosActuales: Set<string>, idEquipo: string): Set<string> {
+    const nuevoSet = new Set<string>(favoritosActuales);
+    if (nuevoSet.has(idEquipo)) {
+        nuevoSet.delete(idEquipo);
+    } else {
+        nuevoSet.add(idEquipo);
+    }
+
+    try {
+        localStorage.setItem(CLAVE_FAVORITOS, JSON.stringify([...nuevoSet]));
+    } catch {
+        // Ignorar errores de almacenamiento
+    }
+
+    return nuevoSet;
 }

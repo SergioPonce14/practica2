@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Liga</title>
+    <title>La Liga · M2 Async Odyssey</title>
     <link rel="stylesheet" href="/src/style.css">
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/main.ts" defer></script>
 </head>
 <body>
     <header>
-        <h1>La Liga</h1>
-        <p>Los 20 clubes de Primera División: haz clic en cualquier equipo para ver su historia y estadio</p>
+        <h1>⚽ Atlas de La Liga</h1>
+        <p>Explora los clubes de Primera División, marca tus favoritos y consulta su historia</p>
     </header>
 
     <main class="contenedor-principal">
@@ -19,21 +19,25 @@
 
             <select id="selectOrden">
                 <option value="nombre">Ordenar por nombre (A-Z)</option>
-                <option value="capacidad">Mayor capacidad de estadio</option>
                 <option value="fundacion">Más antiguos primero</option>
             </select>
 
-            <button id="btnRecargar" type="button">recargar</button>
+            <label class="filtro-favoritos">
+                <input type="checkbox" id="checkFavoritos">
+                <span>⭐ Solo favoritos</span>
+            </label>
+
+            <button id="btnRecargar" type="button">🔄 Limpiar caché y recargar</button>
         </section>
 
-        <!-- Estadísticas calculadas con reduce() -->
+        <!-- Estadísticas calculadas con reduce() y Object.groupBy() -->
         <section id="estadisticas" class="panel-estadisticas"></section>
 
-        <!-- Contenedor para los 3 estados (cargando, error, vacío) y las 20 tarjetas -->
+        <!-- Contenedor para los 3 estados (cargando, error, vacío) y las tarjetas -->
         <section id="contenedorEquipos" class="grid-equipos"></section>
     </main>
 
-    
+    <!-- Modal oculto para ver la información completa al clicar un equipo -->
     <div id="modalDetalle" class="modal oculto">
         <div class="modal-contenido">
             <button id="btnCerrarModal" class="btn-cerrar" type="button">✖ Cerrar</button>

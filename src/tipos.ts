@@ -1,27 +1,30 @@
-export interface EquipoApi {
+export interface EquipoApiCrudo {
     readonly idTeam: string;
     strTeam: string;
-    intFormedYear: string;
-    strStadium: string;
-    intStadiumCapacity: string;
-    strLocation: string;
-    strBadge: string;
+    strTeamShort?: string | null;
+    strKeywords?: string | null;
+    intFormedYear?: string | null;
+    strStadium?: string | null;
+    strLocation?: string | null;
+    strBadge?: string | null;
     strEquipment?: string | null;
+    strColour1?: string | null;
     strDescriptionES?: string | null;
     strDescriptionEN?: string | null;
     strWebsite?: string | null;
 }
 
 export interface RespuestaTheSportsDB {
-    readonly teams: EquipoApi[] | null;
+    readonly teams: EquipoApiCrudo[] | null;
 }
 
 export interface Equipo {
     readonly id: string;
     nombre: string;
-    fundacion: number;
+    apodo: string;
+    color: string;
+    fundacion?: number;
     estadio: string;
-    capacidad: number;
     ciudad: string;
     escudo: string;
     camiseta?: string;
@@ -29,4 +32,14 @@ export interface Equipo {
     web?: string;
 }
 
-export type CriterioOrden = "nombre" | "capacidad" | "fundacion";
+export type CriterioOrden = "nombre" | "fundacion";
+
+export interface EstadisticasLiga {
+    totalEquipos: number;
+    totalCiudades: number;
+}
+
+export interface EstructuraCache {
+    timestamp: number;
+    equipos: Equipo[];
+}
