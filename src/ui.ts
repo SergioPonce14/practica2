@@ -41,8 +41,8 @@ export function renderizarEquipos(
         const mensaje = document.createElement("p");
 
         mensaje.textContent = totalOriginales === 0
-            ? "📭 La API no devolvió ningún equipo en este momento."
-            : "🔍 Ningún equipo coincide con los filtros de búsqueda actuales.";
+            ? "La API no devolvió ningún equipo en este momento."
+            : " Ningún equipo coincide con los filtros de búsqueda actuales.";
 
         cajaVacia.appendChild(mensaje);
         contenedor.replaceChildren(cajaVacia);
@@ -54,7 +54,7 @@ export function renderizarEquipos(
         tarjeta.className = "tarjeta-equipo";
         tarjeta.style.borderTopColor = eq.color;
 
-        // --- CABECERA DE LA TARJETA ---
+        //  CABECERA DE LA TARJETA 
         const cabecera = document.createElement("div");
         cabecera.className = "cabecera-tarjeta";
 

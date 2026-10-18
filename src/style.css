@@ -58,7 +58,7 @@ header h1 { color: var(--color-primario); margin-bottom: 6px; }
 .btn-favorito:hover { transform: scale(1.2); }
 .equipacion-modal { width: 110px; height: 110px; object-fit: contain; display: block; margin: 14px auto; }
 
-/* --- Extras añadidos a la tarjeta --- */
+
 .extras-tarjeta {
   display: flex;
   justify-content: space-between;
