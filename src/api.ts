@@ -11,7 +11,7 @@ export async function obtenerEquiposLaLiga(forzarRecarga: boolean = false): Prom
         try {
             const datosGuardados = localStorage.getItem(CLAVE_CACHE);
             if (datosGuardados) {
-                console.log("⚡ Caché: Cargando equipos desde localStorage");
+                console.log("Caché: Cargando equipos desde localStorage");
                 return JSON.parse(datosGuardados) as Equipo[];
             }
         } catch (e) {

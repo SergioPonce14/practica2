@@ -88,8 +88,7 @@ export function renderizarEquipos(
         });
 
         cabecera.append(img, infoTitulo, btnFav);
-
-        // --- CUERPO DE LA TARJETA ---
+        //  CUERPO DE LA TARJETA 
         const cuerpo = document.createElement("div");
         cuerpo.className = "cuerpo-tarjeta";
 
@@ -111,7 +110,7 @@ export function renderizarEquipos(
 
         cuerpo.append(pEstadio, pFundacion, pResumen);
 
-        // --- EXTRAS (Enlace web y Camiseta) ---
+        // Si el equipo tiene web o camiseta, añadimos un pequeño bloque con esos extras
         if (eq.web || eq.camiseta) {
             const extras = document.createElement("div");
             extras.className = "extras-tarjeta";
@@ -152,9 +151,9 @@ export function renderizarEquipos(
 export function renderizarEstadisticas(stats: EstadisticasLiga, contenedorStats: HTMLElement): void {
     const metricas: Array<[string, string]> = [
         ["Equipos mostrados:", String(stats.totalEquipos)],
-        ["Ciudades diferentes:", String(stats.totalCiudades)]
+    
     ];
-
+    
     const cajas = metricas.map(([etiqueta, valor]) => {
         const div = document.createElement("div");
         div.className = "stat-box";

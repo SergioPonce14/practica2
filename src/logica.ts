@@ -27,7 +27,7 @@ export function filtrarEquipos(
 const COMPARADORES: Record<CriterioOrden, (a: Equipo, b: Equipo) => number> = {
     nombre: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
     fundacion: (a, b) => {
-        const anioA = a.fundacion ?? Number.MAX_SAFE_INTEGER;
+        const anioA = a.fundacion ?? Number.MAX_SAFE_INTEGER;// Si no tiene fundación, lo consideramos "más reciente" que cualquier otro
         const anioB = b.fundacion ?? Number.MAX_SAFE_INTEGER;
         return anioA - anioB;
     }
@@ -58,12 +58,12 @@ export function calcularEstadisticas(equipos: Equipo[]): EstadisticasLiga {
 export function cargarFavoritos(): Set<string> {
     try {
         const guardado = localStorage.getItem(CLAVE_FAVORITOS);
-        if (!guardado) return new Set<string>();
-        const lista: unknown = JSON.parse(guardado);
+        if (!guardado) return new Set<string>();// Si no hay nada guardado, devolvemos un Set vacío
+        const lista: unknown = JSON.parse(guardado);// Intentamos parsear el contenido del localStorage
         if (Array.isArray(lista) && lista.every((id) => typeof id === "string")) {
             return new Set<string>(lista);
         }
-        return new Set<string>();
+        return new Set<string>();// Si el contenido no es un array de strings, devolvemos un Set vacío
     } catch {
         return new Set<string>();
     }
