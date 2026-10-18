@@ -19,8 +19,7 @@ export function filtrarEquipos(
         return (
             eq.nombre.toLowerCase().includes(texto) ||
             eq.ciudad.toLowerCase().includes(texto) ||
-            eq.estadio.toLowerCase().includes(texto) ||
-            eq.apodo.toLowerCase().includes(texto)
+            eq.estadio.toLowerCase().includes(texto) 
         );
     });
 }

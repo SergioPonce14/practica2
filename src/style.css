@@ -57,3 +57,32 @@ header h1 { color: var(--color-primario); margin-bottom: 6px; }
 .btn-favorito { background: transparent; border: none; font-size: 1.4rem; cursor: pointer; line-height: 1; padding: 4px; transition: transform 0.15s; }
 .btn-favorito:hover { transform: scale(1.2); }
 .equipacion-modal { width: 110px; height: 110px; object-fit: contain; display: block; margin: 14px auto; }
+
+/* --- Extras añadidos a la tarjeta --- */
+.extras-tarjeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--borde);
+}
+
+.enlace-web {
+  font-size: 0.85rem;
+  color: var(--color-secundario);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.enlace-web:hover {
+  color: var(--color-primario);
+  text-decoration: underline;
+}
+
+.mini-camiseta {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}

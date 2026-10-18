@@ -21,7 +21,6 @@ export interface RespuestaTheSportsDB {
 export interface Equipo {
     readonly id: string;
     nombre: string;
-    apodo: string;
     color: string;
     fundacion?: number;
     estadio: string;

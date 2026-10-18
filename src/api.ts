@@ -46,8 +46,7 @@ export async function obtenerEquiposLaLiga(forzarRecarga: boolean = false): Prom
         return {
             id: t.idTeam,
             nombre: t.strTeam,
-            apodo: "aa",
-            color: t.strColour1?.trim() || "#13387f",
+            color: t.strColour1?.trim()|| "#13387f",
             fundacion: !Number.isNaN(anio) ? anio : undefined,
             estadio: t.strStadium || "Estadio no especificado",
             ciudad: t.strLocation || "España",

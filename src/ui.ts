@@ -5,7 +5,7 @@ export function mostrarCargando(contenedor: HTMLElement): void {
     caja.className = "estado-carga";
     
     const texto = document.createElement("p");
-    texto.textContent = " Cargando equipos de La Liga...";
+    texto.textContent = "⏳ Cargando equipos de La Liga...";
     
     caja.appendChild(texto);
     contenedor.replaceChildren(caja);
@@ -16,7 +16,7 @@ export function mostrarError(contenedor: HTMLElement, mensaje: string, alReinten
     caja.className = "estado-error";
 
     const parrafo = document.createElement("p");
-    parrafo.textContent = ` ${mensaje}`;
+    parrafo.textContent = `⚠ ${mensaje}`;
 
     const boton = document.createElement("button");
     boton.type = "button";
@@ -41,8 +41,8 @@ export function renderizarEquipos(
         const mensaje = document.createElement("p");
 
         mensaje.textContent = totalOriginales === 0
-            ? " La API no devolvió ningún equipo en este momento."
-            : " Ningún equipo coincide con los filtros de búsqueda actuales.";
+            ? "📭 La API no devolvió ningún equipo en este momento."
+            : "🔍 Ningún equipo coincide con los filtros de búsqueda actuales.";
 
         cajaVacia.appendChild(mensaje);
         contenedor.replaceChildren(cajaVacia);
@@ -54,11 +54,12 @@ export function renderizarEquipos(
         tarjeta.className = "tarjeta-equipo";
         tarjeta.style.borderTopColor = eq.color;
 
+        // --- CABECERA DE LA TARJETA ---
         const cabecera = document.createElement("div");
         cabecera.className = "cabecera-tarjeta";
 
         const img = document.createElement("img");
-        img.src = eq.escudo;
+        img.src = eq.escudo || "https://via.placeholder.com/50?text=Escudo";
         img.alt = `Escudo de ${eq.nombre}`;
         img.loading = "lazy";
 
@@ -88,6 +89,7 @@ export function renderizarEquipos(
 
         cabecera.append(img, infoTitulo, btnFav);
 
+        // --- CUERPO DE LA TARJETA ---
         const cuerpo = document.createElement("div");
         cuerpo.className = "cuerpo-tarjeta";
 
@@ -97,7 +99,46 @@ export function renderizarEquipos(
         const pFundacion = document.createElement("p");
         pFundacion.textContent = `🏛 Fundación: ${eq.fundacion !== undefined ? eq.fundacion : "Desconocida"}`;
 
-        cuerpo.append(pEstadio, pFundacion);
+        // Añadimos un pequeño extracto de la descripción (preview)
+        const pResumen = document.createElement("p");
+        const textoDesc = eq.descripcion.length > 70 ? eq.descripcion.substring(0, 70) + "..." : eq.descripcion;
+        pResumen.textContent = `📝 ${textoDesc}`;
+        // Estilos en línea para darle aspecto de nota/extracto sin tocar el CSS general
+        pResumen.style.fontSize = "0.85rem";
+        pResumen.style.color = "#666";
+        pResumen.style.fontStyle = "italic";
+        pResumen.style.marginTop = "8px";
+
+        cuerpo.append(pEstadio, pFundacion, pResumen);
+
+        // --- EXTRAS (Enlace web y Camiseta) ---
+        if (eq.web || eq.camiseta) {
+            const extras = document.createElement("div");
+            extras.className = "extras-tarjeta";
+
+            if (eq.web) {
+                const enlace = document.createElement("a");
+                enlace.href = eq.web;
+                enlace.target = "_blank";
+                enlace.rel = "noopener noreferrer";
+                enlace.textContent = "🌐 Web Oficial ↗";
+                enlace.className = "enlace-web";
+                enlace.addEventListener("click", (evento) => evento.stopPropagation());
+                extras.appendChild(enlace);
+            }
+
+            if (eq.camiseta) {
+                const imgCamiseta = document.createElement("img");
+                imgCamiseta.src = eq.camiseta;
+                imgCamiseta.alt = `Equipación de ${eq.nombre}`;
+                imgCamiseta.className = "mini-camiseta";
+                imgCamiseta.loading = "lazy";
+                extras.appendChild(imgCamiseta);
+            }
+
+            cuerpo.appendChild(extras);
+        }
+
         tarjeta.append(cabecera, cuerpo);
         
         tarjeta.addEventListener("click", () => alSeleccionarEquipo(eq));
@@ -143,8 +184,6 @@ export function abrirModalDetalle(equipo: Equipo, modal: HTMLElement, cuerpoModa
     const h2 = document.createElement("h2");
     h2.textContent = equipo.nombre;
 
-    const pApodo = document.createElement("p");
-
     const separador = document.createElement("hr");
 
     const pCiudad = document.createElement("p");
@@ -158,7 +197,7 @@ export function abrirModalDetalle(equipo: Equipo, modal: HTMLElement, cuerpoModa
     pDesc.className = "descripcion";
     pDesc.textContent = equipo.descripcion;
 
-    contenedor.append(img, h2, pApodo, separador, pCiudad, pEstadio, pDesc);
+    contenedor.append(img, h2, separador, pCiudad, pEstadio, pDesc);
 
     if (equipo.camiseta) {
         const imgCamiseta = document.createElement("img");
